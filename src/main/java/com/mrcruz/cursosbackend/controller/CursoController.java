@@ -1,5 +1,6 @@
 package com.mrcruz.cursosbackend.controller;
 
+import com.mrcruz.cursosbackend.controller.response.CursoResponse;
 import com.mrcruz.cursosbackend.model.Curso;
 import com.mrcruz.cursosbackend.service.CursoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,30 +13,38 @@ import java.util.List;
 
 @RestController
 @Validated
+@RequestMapping("/cursos")
 public class CursoController {
 
     @Autowired
     private CursoService service;
 
     @GetMapping
-    public List<Curso> listar(){
+    public List<CursoResponse> listar(){
         return service.listar();
+    }
+
+    @GetMapping("/filtro")
+    public List<CursoResponse> listarFiltro(Curso filtro){
+        return service.listarFiltro(filtro);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Curso salvar(@Valid @RequestBody Curso curso){
-        return service.salvar(curso);
+    public CursoResponse salvar(@Valid @RequestBody Curso curso){
+        Curso cursoSalvo = service.salvar(curso);
+        return new CursoResponse(cursoSalvo);
     }
 
     @GetMapping("/{id}")
-    public Curso buscar(@PathVariable Long id){
+    public CursoResponse buscar(@PathVariable Long id){
         return service.buscar(id);
     }
 
     @PutMapping("/{id}")
-    public Curso buscar(@PathVariable Long id, @Valid @RequestBody Curso curso){
-        return service.atualizar(id, curso);
+    public CursoResponse buscar(@PathVariable Long id, @Valid @RequestBody Curso curso){
+        Curso cursoAtualizado = service.atualizar(id, curso);
+        return new CursoResponse(cursoAtualizado);
     }
 
     @DeleteMapping("/{id}")

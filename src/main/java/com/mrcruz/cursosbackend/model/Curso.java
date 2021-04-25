@@ -1,5 +1,6 @@
 package com.mrcruz.cursosbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,6 +36,7 @@ public class Curso {
     private LocalDateTime atualizadoEm;
 
     @Future(message = "{curso.disponivel.apartir}")
+    @JsonIgnore
     private LocalDateTime disponivelApartirDe;
 
 }
