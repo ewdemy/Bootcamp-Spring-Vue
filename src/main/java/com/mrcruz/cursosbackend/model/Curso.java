@@ -7,10 +7,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+
 
 @Data
 @AllArgsConstructor
@@ -30,7 +32,7 @@ public class Curso {
     @Min(value = 1, message = "{curso.preco.minimo}")
     private Double preco;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Arquivo arquivo;
     private LocalDateTime criadoEm;
     private LocalDateTime atualizadoEm;

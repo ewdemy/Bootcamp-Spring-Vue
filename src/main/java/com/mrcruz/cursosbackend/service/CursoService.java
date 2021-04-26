@@ -9,8 +9,8 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,11 +29,7 @@ public class CursoService {
     public List<CursoResponse> listar(){
         List<Curso> cursos = repository.findAll();
 
-        List<CursoResponse> cursosResponse = cursos.stream().map((curso) -> {
-            return new CursoResponse(curso);
-        }).collect(Collectors.toList());
-
-        return cursosResponse;
+        return cursos.stream().map(CursoResponse::new).collect(Collectors.toList());
     }
 
     public List<CursoResponse> listarFiltro(Curso filtro){
@@ -59,6 +55,9 @@ public class CursoService {
         Optional<Curso> cursoExistente = repository.findById(id);
         if(cursoExistente.isEmpty()){
             throw new EntityNotFoundException();
+        }
+        if(curso.getArquivo() == null){
+            curso.setArquivo(cursoExistente.get().getArquivo());
         }
         curso.setId(id);
         curso.setAtualizadoEm(LocalDateTime.now());
